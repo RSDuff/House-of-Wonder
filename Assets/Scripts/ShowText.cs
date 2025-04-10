@@ -27,15 +27,16 @@ public class ShowText : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            Invoke("selectAText", 0);
+            textElement.enabled = true;
+            textElement.text = textValue[Random.Range(0, textValue.Length)];
+            //Invoke("selectAText", 0);
         }
 
     }
 
     void selectAText()
     {
-        textElement.enabled = true;
-        textElement.text = textValue[Random.Range(0, textValue.Length)];
+
         //fadeOut = true;
         //Invoke("disappearTimer", 1);
 
