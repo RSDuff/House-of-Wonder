@@ -46,30 +46,36 @@ public class ShowText : MonoBehaviour
     {
         textElement.enabled = false;
         serialPort = new SerialPort("COM3", 9600);
-        serialPort.Open();        serialPort.ReadTimeout = 100; // Optional
+        serialPort.Open();
+        serialPort.ReadTimeout = 100; // Optional
         Debug.Log(serialPort);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (serialPort != null && serialPort.IsOpen)        {                                string data = serialPort.ReadLine();                //int sensorValue = int.Parse(data);                Debug.Log(data);
+        if (serialPort != null && serialPort.IsOpen)
+        {
+                
+                string data = serialPort.ReadLine();
+                //int sensorValue = int.Parse(data);
+                Debug.Log(data);
 
                 textElement.enabled = true;
                 textElement.text = textValue[Random.Range(0, textValue.Length)];
 
                 // Use sensorValue to drive Unity logic
-                }
+        
+        }
 
 
 
-        //if (Input.GetKeyDown(KeyCode.Mouse0))
-        //{
-        //    Debug.Log("Mouse pressed");
-        //    textElement.enabled = true;
-        //    textElement.text = textValue[Random.Range(0, textValue.Length)];
-        ////    //Invoke("selectAText", 0);
-        //}
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+           Debug.Log("Mouse pressed");
+            textElement.enabled = true;
+            textElement.text = textValue[Random.Range(0, textValue.Length)];
+        }
 
     }
 
