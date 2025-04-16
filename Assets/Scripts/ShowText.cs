@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO.Ports;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
 public class ShowText : MonoBehaviour
 {
+    SerialPort serialPort = new SerialPort("COM3", 9600); // Update COM port if needed
+
     public string[] textValue;
     public string textValuePressed;
     public TextMeshProUGUI textElement;
@@ -16,21 +19,57 @@ public class ShowText : MonoBehaviour
     private float valueToLerp;
     private float delayTime = 3f;
 
+    // Invoked when a line of data is received from the serial device.
+    void OnMessageArrived(string msg)
+    {
+        //string data = serialPort.ReadLine();
+        //int sensorValue = int.Parse(data);
+        //Debug.Log(data);
+
+        textElement.enabled = true;
+        textElement.text = textValue[Random.Range(0, textValue.Length)];
+
+
+        //textElement.enabled = true;
+        //textElement.text = textValue[Random.Range(0, textValue.Length)];
+    }
+
+    //Invoked when a connect/disconnect event occurs. The parameter 'success'
+    //will be 'true' upon connection and 'false' upoin disconnection or
+    //failure to connect.
+    void OnConnectionEvent(bool success)
+    {
+
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         textElement.enabled = false;
+        serialPort = new SerialPort("COM3", 9600);
+        serialPort.Open();        serialPort.ReadTimeout = 100; // Optional
+        Debug.Log(serialPort);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            textElement.enabled = true;
-            textElement.text = textValue[Random.Range(0, textValue.Length)];
-            //Invoke("selectAText", 0);
-        }
+        if (serialPort != null && serialPort.IsOpen)        {                                string data = serialPort.ReadLine();                //int sensorValue = int.Parse(data);                Debug.Log(data);
+
+                textElement.enabled = true;
+                textElement.text = textValue[Random.Range(0, textValue.Length)];
+
+                // Use sensorValue to drive Unity logic
+                }
+
+
+
+        //if (Input.GetKeyDown(KeyCode.Mouse0))
+        //{
+        //    Debug.Log("Mouse pressed");
+        //    textElement.enabled = true;
+        //    textElement.text = textValue[Random.Range(0, textValue.Length)];
+        ////    //Invoke("selectAText", 0);
+        //}
 
     }
 
@@ -66,4 +105,6 @@ public class ShowText : MonoBehaviour
 
         //textElement.enabled = false;
     }
+
+
 }
